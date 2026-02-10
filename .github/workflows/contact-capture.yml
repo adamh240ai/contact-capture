@@ -1,38 +1,28 @@
 name: Contact Capture
 
-# Triggers
 on:
-  workflow_dispatch:        # allows manual runs from Actions tab
-  push:                     # temporary trigger to force a first run
-    branches:
-      - main
-  schedule:                 # automatically runs twice daily
-    - cron: '0 17 * * *'   # 17:00 UTC (Noon ET)
-    - cron: '0 0 * * *'    # 00:00 UTC (7 PM ET previous day)
+  workflow_dispatch:  # allows manual run
+  schedule:
+    - cron: '0 17 * * *'  # Noon ET
+    - cron: '0 0 * * *'   # 7 PM ET
 
-# Jobs define what happens
 jobs:
   run-contact-capture:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout your repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run Contact Capture script
       - name: Run Contact Capture
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
