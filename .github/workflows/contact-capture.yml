@@ -1,6 +1,7 @@
 name: Contact Capture
 
 on:
+  workflow_dispatch:
   schedule:
     # Runs twice daily — adjust these to your timezone
     # Default: Noon ET (17:00 UTC) and 7 PM ET (00:00 UTC)
