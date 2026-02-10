@@ -1,37 +1,45 @@
 name: Contact Capture
 
+# Triggers
 on:
-  workflow_dispatch:  # allows manual runs anytime from GitHub Actions tab
+  # Allows you to run the workflow manually anytime from GitHub Actions tab
+  workflow_dispatch:
+
+  # Automatically runs twice daily
   schedule:
-    # Runs twice daily — adjust these to your timezone
-    # Default: Noon ET (17:00 UTC) and 7 PM ET (00:00 UTC)
+    # Runs at 17:00 UTC (Noon ET)
     - cron: '0 17 * * *'
+    # Runs at 00:00 UTC (7 PM ET previous day)
     - cron: '0 0 * * *'
+
+# Jobs define what happens
 jobs:
-  capture:
+  run-contact-capture:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # Step 1: Checkout your repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
+      # Step 2: Set up Python
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.x'
 
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Run contact capture
+      # Step 4: Run Contact Capture script
+      - name: Run Contact Capture
         env:
-          # Required
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-          # Optional — each adds features
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
-          APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
-        run: python capture.py
+        run: |
+          python main.py
