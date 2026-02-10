@@ -1,14 +1,12 @@
 name: Contact Capture
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # allows manual runs anytime from GitHub Actions tab
   schedule:
     # Runs twice daily — adjust these to your timezone
     # Default: Noon ET (17:00 UTC) and 7 PM ET (00:00 UTC)
     - cron: '0 17 * * *'
     - cron: '0 0 * * *'
-  workflow_dispatch: # Manual trigger anytime from GitHub Actions tab
-
 jobs:
   capture:
     runs-on: ubuntu-latest
