@@ -2,15 +2,13 @@ name: Contact Capture
 
 # Triggers
 on:
-  # Allows you to run the workflow manually anytime from GitHub Actions tab
-  workflow_dispatch:
-
-  # Automatically runs twice daily
-  schedule:
-    # Runs at 17:00 UTC (Noon ET)
-    - cron: '0 17 * * *'
-    # Runs at 00:00 UTC (7 PM ET previous day)
-    - cron: '0 0 * * *'
+  workflow_dispatch:        # allows manual runs from Actions tab
+  push:                     # temporary trigger to force a first run
+    branches:
+      - main
+  schedule:                 # automatically runs twice daily
+    - cron: '0 17 * * *'   # 17:00 UTC (Noon ET)
+    - cron: '0 0 * * *'    # 00:00 UTC (7 PM ET previous day)
 
 # Jobs define what happens
 jobs:
